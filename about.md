@@ -21,7 +21,7 @@ If you want to learn more about me, come <a href='../moreaboutme/index.html'>her
 <p>
 
 如果你想搭建一个类似的博客，可以看前辈的
-<a href="/2016/10/jekyll_tutorials1/"> Jekyll 搭建个人博客 </a>
+<a href="http://baixin.io/2016/10/jekyll_tutorials1/"> Jekyll 搭建个人博客 </a>
 教程
 
 <p> 
