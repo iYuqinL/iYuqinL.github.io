@@ -53,13 +53,13 @@ cover_color: clear
 
 # The blog button should not be removed.
 blog_button:
-    title: blogs
+    {title: blogs, description: blogs, url: '/about'}
 
 # Navigation buttons in the front page.s
 nav:
-    - {title: archives, description: archive, url: 'https://jimleungjing.github.io/archives/'}   
-    - {title: github, description: github, url: 'https://github.com/jimleungjing'}      
-    - {title: aboutme, description: about, url: '/about'}   
+    - {title: archives, description: archive, url: 'https://jimleungjing.github.io/archives/'}
+    - {title: github, description: github, url: 'https://github.com/jimleungjing'}   
+    - {title: aboutme, description: about, url: '/about'}
     
 
 # Pagination

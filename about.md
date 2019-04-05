@@ -12,28 +12,3 @@ title: 关于我
 <p>
 If you want to learn more about me, come <a href='../moreaboutme/index.html'>here</a>
 <p>
-
-<h3> 关于我的博客 </h3>  
-<p>
-
-这个博客模板是克隆 (clone) <a target="_blank" href="http://baixin.io/"> 潘柏信</a> 前辈的，在这里表示感谢。
-
-<p>
-
-如果你想搭建一个类似的博客，可以看前辈的
-<a href="http://baixin.io/2016/10/jekyll_tutorials1/"> Jekyll 搭建个人博客 </a>
-教程
-
-<p> 
-
-博客源码在 <a target="_blank" href='https://github.com/leopardpan/leopardpan.github.io/'>Github</a> 上，
-
-<p> 
-
-<p> 
-
-<p> 
-
-
-{% include comments.html %}
-
