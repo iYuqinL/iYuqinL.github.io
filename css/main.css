@@ -498,13 +498,13 @@ img::-moz-selection {
   .panel-title {
     margin: 0 0 5px 0;
     margin-top: 20px;
-    font-size: 1.8em;
+    font-size: 2.0em;
     letter-spacing: 4px;
     color: #FFF; }
 
   .panel-subtitle {
     font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
-    font-size: 0.6em;
+    font-size: 1.0em;
     font-weight: lighter;
     letter-spacing: 3px;
     color: #CCCCCC;
@@ -517,7 +517,7 @@ img::-moz-selection {
     width: 100%;
     max-width: none;
     height: 100%;
-    background: url(/images/background_p1.jpg) top left no-repeat #666666;
+    background: url(/images/background_jim.jpg) top left no-repeat #8f8d8d;
     background-size: cover; }
 
   .panel-cover--collapsed {
@@ -532,9 +532,12 @@ img::-moz-selection {
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: rgba(68, 68, 68, 0.4);
-    background-image: -webkit-linear-gradient(-410deg, rgba(68, 68, 68, 0.4) 20%, rgba(0, 0, 0, 0.9));
-    background-image: linear-gradient(140deg,rgba(68, 68, 68, 0.4) 20%, rgba(0, 0, 0, 0.4)); }
+    background-color: rgba(143, 143, 143, 0.205);
+    background-image: -webkit-linear-gradient(-410deg, rgba(139, 139, 139, 0.205) 20%,
+      rgba(0, 0, 0, 0.5));
+    background-image: linear-gradient(140deg, rgba(139, 139, 139, 0.205) 20%,
+      rgba(0, 0, 0, 0.5));
+    }
 
   .panel-cover__logo {
     margin-bottom: .2em; }
@@ -716,7 +719,7 @@ img::-moz-selection {
     display: inline-block;
     margin-right: 0px;
     padding: 5px 5px 5px 5px;
-    font-size: .6em;
+    font-size: .8em;
     text-shadow: none;
     color: #BF1827;
   }
@@ -730,8 +733,8 @@ img::-moz-selection {
     display: inline-block;
     position: relative;
     width: 100%;
-    border-color: #666;
-    color: #666;
+    border-color: rgb(240, 240, 240);
+    color: rgb(233, 233, 233);
     /*opacity: .8; */
   }
 
@@ -1059,7 +1062,7 @@ input[type="tel"]:-ms-input-placeholder {
 
   .panel-cover__description {
     margin: 0 10px;
-    font-size: .9em; }
+    font-size: 1.2em; }
 }
 @media all and (max-width: 1100px) {
   .btn-mobile-menu {
@@ -1126,7 +1129,7 @@ input[type="tel"]:-ms-input-placeholder {
     width: 300px;
     padding: 20px 0;
     background: rgba(51, 51, 51, 0.98);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15); 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5); 
   }
   .navigation-wrapper.visible {
     display: block; 
@@ -1305,15 +1308,15 @@ body {
 
 .ih-item.circle {
     position: relative;
-    width: 120px;
-    height: 120px;
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
 }
 
 .ih-item.circle .img {
     position: relative;
-    width: 120px;
-    height: 120px;
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
 }
 .ih-item.circle .img:before {
@@ -1373,9 +1376,9 @@ nav a {
 
 .nav-menu-item a {
   padding: 0px;
-  color: #999;
+  color: rgba(235, 234, 243, 0.904);
   font-weight: 700;
-  font-size: .8em;
+  font-size: 1.2em; /* 0.8em*/
   text-shadow: none;
   -webkit-transition: color 0.3s;
   -moz-transition: color 0.3s;

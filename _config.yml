@@ -1,12 +1,12 @@
 # Basic
-title: 梁宇钦
-subtitle: 个人站
-description: 欢迎来到我的个人站~
+title: Jim Leung
+subtitle: Personal Site
+description: Welcome to my personal site~
 # 头像里面的标题
-avatarTitle: yusnows
+avatarTitle: Jim Leung
 # 头像里面的描述
-avatarDesc: 嵌入式/Linux/计算机视觉
-url: "http://yusnows.github.io"
+avatarDesc: Linux/ComputerVisoin
+url: "http://jimleungjing.github.io"
 
 # Comment
 comment:
@@ -15,8 +15,8 @@ comment:
 
 # Social
 social:
-    weibo: 15996253992 
-    github: yusnows
+    weibo: 15996253992
+    github: jimleung
     # twitter: 
     mail: yusnowsliang@gmail.com
 
@@ -53,13 +53,13 @@ cover_color: clear
 
 # The blog button should not be removed.
 blog_button:
-    title: 博客主页
+    title: blogs
 
 # Navigation buttons in the front page.s
 nav:
-    - {title: 所有文章, description: archive, url: '/archive'}   
-    - {title: 标签, description: tags, url: '/tags'}      
-    - {title: 关于我, description: about, url: '/about'}      
+    - {title: archives, description: archive, url: 'https://jimleungjing.github.io/archives/'}   
+    - {title: github, description: github, url: 'https://github.com/jimleungjing'}      
+    - {title: aboutme, description: about, url: '/about'}   
     
 
 # Pagination
