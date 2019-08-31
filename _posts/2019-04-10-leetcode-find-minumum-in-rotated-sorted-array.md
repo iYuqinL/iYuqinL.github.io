@@ -1,7 +1,7 @@
 ---
 layout: post
 title: LeetCode  Find Minimum in Rotated Sorted Array I & II 
-date: 2019-04-08
+date: 2019-04-10
 tags: leetcode algorithm OJ binary_search
 ---
 
@@ -33,7 +33,7 @@ Output: 0
 
 这题如果按照$O(n)$的复杂度做的话，是十分简单的。只要遍历一次数组就可以了。但是我们可以找到更加优秀的算法。由于数组是”有序”的，只是经过了一个旋转。如果我们画出数组里面的元素的图的话，大概如下：
 
-![153](../images/posts/leetcode/153.jpg)
+![153](/images/posts/leetcode/153.jpg)
 
 其中蓝的和橙色的线段表示数据，另外的横和竖的虚线是标线。这就是我们拿到的数组的数据的情况。我们要找的最小的元素就是橙色线段的最左边的那个点。很显然我们还是可以利用二分查找的。如果$nums[r] < nums[mid]$, 那么说明$l,  mid$ 位于蓝色线段上，因此$l=mid+1$ ，否则$mid $ 位于橙色线段上，$r = mid$ ,(这里要注意的是r=mid，而不是r=mid-1，因为有可能会越过边界). 代码如下：
 
