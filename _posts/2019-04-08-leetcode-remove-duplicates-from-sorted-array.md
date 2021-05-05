@@ -2,7 +2,7 @@
 layout: post
 title: LeetCode Move Zeroes & Remove Element & Remove Duplicates from Sorted Array
 date: 2019-04-08
-tags: leetcode algorithm OJ
+tags: leetcode
 ---
 
 ### 283. Move Zeroes

@@ -2,7 +2,7 @@
 layout: post
 title: Samsung_x210_v3 嵌入式开发(二):Frame Buffer
 date: 2017-11-10
-tags: 嵌入式 FrameBuffer arm Linux
+tags: 嵌入式Linux Samsung_x210
 ---
 
 本项目的github地址: <a href="https://github.com/Yusnows/Samsung_X210v3">github</a> ，对应的代码在 LCD目录中。

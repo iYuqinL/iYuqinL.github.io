@@ -2,7 +2,7 @@
 layout: post
 title: LeetCode  Find Minimum in Rotated Sorted Array I & II 
 date: 2019-04-10
-tags: leetcode algorithm OJ binary_search
+tags: leetcode
 ---
 
 ### 153. Find Minimum in Rotated Sorted Array

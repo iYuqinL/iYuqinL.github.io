@@ -2,7 +2,7 @@
 layout: post
 title: Samsung_x210_v3 嵌入式开发(二):触摸屏(touch screen)--tslib 移植
 date: 2017-11-12
-tags: 嵌入式 触摸屏 touch_screen arm Linux tslib
+tags: 嵌入式Linux Samsung_x210 触摸屏 
 ---
 
 ## 实验环境

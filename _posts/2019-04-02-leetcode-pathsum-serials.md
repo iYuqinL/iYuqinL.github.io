@@ -2,7 +2,7 @@
 layout: post
 title: LeetCode Path Sum Serials I II III
 date: 2019-04-02
-tags: leetcode algorithm OJ
+tags: leetcode
 ---
 
 ### 112. Path Sum

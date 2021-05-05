@@ -2,7 +2,7 @@
 layout: post
 title: 2019 Microsoft Internship on line code test I
 date: 2019-04-02
-tags: algorithm OJ internship
+tags: InterviewCoding
 ---
 
 ### 1. Playing with Beads
