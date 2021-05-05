@@ -41,7 +41,7 @@ table {
   border-spacing: 0; }
 
 body {
-  width: 100%;
+  width: 90%;
   *zoom: 1; 
 }
 body:before, body:after {
@@ -63,7 +63,7 @@ html {
 
 body {
   font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   color: #333;
   -webkit-font-smoothing: antialiased; }
 
@@ -98,7 +98,7 @@ h2,
 h3,
 h4,
 h5,
-h5 {
+h6 {
   margin-top: 1.0em;
   margin-bottom: .5em;
   font-family: "ff-tisa-web-pro-1", "ff-tisa-web-pro-2", "Lucida Grande", "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
@@ -115,22 +115,32 @@ h1 {
 
 h2 {
   font-size: 1.5em; 
-  /*background:#B9D3EE;*/
+  text-indent: 4px; 
+  border-radius: 4px; 
+  padding: 6px 15px;
+  margin-bottom: 15px;
+  margin-top: 30px;
+  background:#a1c0e2;
+  /*0px right, 5px botton, 5px fuzzy*/
+  box-shadow: 0px 5px 5px #77abdf;
+  border-left: 6px solid #5718cd; 
+  position:relative;
   /*text-align: center;*/
 }
 
 h3 {
-  font-size: 1.2em; 
+  font-size: 1.3em; 
   text-indent: 4px; 
   border-radius: 4px; 
   padding: 6px 15px;
-  margin-bottom: 20px;
-  margin-top: 5px;
+  margin-bottom: 10px;
+  margin-top: 20px;
   background:#B9D3EE;
   /*0px right, 5px botton, 5px fuzzy*/
   box-shadow: 0px 5px 5px #9FB6CD;
   border-left: 6px solid #1874CD; 
   position:relative;
+  width: 95%;
 }
 
 h4 {
@@ -139,7 +149,7 @@ h4 {
 }
 
 h5 {
-  font-size: 1em; }
+  font-size: 1.1em; }
 
 p {
   margin-bottom: 10px;
