@@ -69,9 +69,11 @@ tags: algorithm 机器学习
    - MAE 对异常点更加鲁棒：从损失函数上看，MSE 对误差平方化，使得异常点的误差过大；从两个损失函数的假设上看，MSE 假设了误差服从高斯分布，MAE 假设了误差服从拉普拉斯分布，拉普拉斯分布本身对于异常点更加鲁棒.
 
 3. Huber Loss (smooth L1 Loss)
+
    $$
    J_{Huber} = \sum_{i=1}^N \left( I_{\left|y_i - \hat{y}_i \right|\leqslant \delta} \frac{(y_i - \hat{y}_i)^2}{2} + I_{\left|y_i - \hat{y}_i \right|> \delta} \left(\delta \left|y_i - \hat{y}_i\right| - \frac{1}{2}\delta^2 \right)\right)
    $$
+
    上式中，$\delta$ 是 Huber Loss 的一个超参数，$\delta$ 的值是 MSE 与 MAE 两个损失连接的位置。
 
 ## 分类损失函数
