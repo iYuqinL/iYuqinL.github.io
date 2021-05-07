@@ -54,6 +54,7 @@ tags: algorithm 机器学习
     - tanh在原点附近与y = x函数形式相近，当激活值比较低的时候，训练相对比容易；
     - tanh的变化敏感区间较宽，缓解梯度弥散的现象。tanh导数取值范围在0到1之间，要优于sigmoid激活函数的0到0.25，相比于Sigmoid激活函数能够缓解梯度弥散的现象；
     - tanh的输出和输入能够保持非线性单调上升和下降的关系，符合反向传网络梯度的求解，容错性好，有界；
+
     **缺点：**
 
     - 计算量比较大；
@@ -124,6 +125,6 @@ tags: algorithm 机器学习
 
     Mish 没有超参数，其图像如下：
 
-    <img src="/images/posts/machine_learning/20201201102041492.jpg" alt="img" style="zoom: 67%;" />、
+    <img src="/images/posts/machine_learning/20201201102041492.jpg" alt="img" style="zoom: 67%;" />
 
     可以看到与 Swish 在 $\beta = 1$ 时是函数的图像趋势是比较相似的。
