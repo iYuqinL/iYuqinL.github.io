@@ -4,10 +4,8 @@ title: 梁宇钦
 ---
 
 <center>
-Email: YusnowsLiang@gmail.com ~ Phone: 15380994351
+Email: YuqinLiangX@gmail.com
 </center>
-
-
 
 ## 教育经历
 
@@ -27,6 +25,7 @@ Email: YusnowsLiang@gmail.com ~ Phone: 15380994351
 - **项目成果**: 建立了标准人体脊柱模型,实现了人体背部模型重建,能够根据人体背部标注的脊柱相关信息优化得到真实人体脊柱姿态。
 
 ### [**人体摔倒识别(检测)**](https://github.com/Yusnows/tumblerElf) *技术负责人* 2019.12--2020.05
+
 - **项目技术**: Python/Pytorch; Detection; faster rcnn variant.
 - **项目简介**: 利用人工智能技术实现高准确率的人体摔倒检测器。
   - 把人体摔倒检测问题从直觉上的姿态估计问题建模为视觉目标检测问题。

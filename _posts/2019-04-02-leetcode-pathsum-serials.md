@@ -7,7 +7,8 @@ tags: leetcode
 
 ### 112. Path Sum
 
-Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
+Given a binary tree and a sum, determine if the tree has a root-to-leaf path
+such that adding up all the values along the path equals the given sum.
 
 **Note:** A leaf is a node with no children.
 
@@ -15,7 +16,7 @@ Given a binary tree and a sum, determine if the tree has a root-to-leaf path suc
 
 Given the below binary tree and `sum = 22`,
 
-```
+```plaintxt
       5
      / \
     4   8
@@ -27,7 +28,7 @@ Given the below binary tree and `sum = 22`,
 
 return true, as there exist a root-to-leaf path `5->4->11->2` which sum is 22.
 
-#### 解题思路：
+#### 解题思路
 
 这题很简单，题目要求的路径是 root-to-leaf 的，所以很显然只需要深度优先搜索一遍就可以了，同时，由于题目只是问存不存在，因此只要一旦发现满足条件的路径就返回True就可以了，其他的节点就不用继续搜索了。
 
@@ -50,7 +51,7 @@ public:
         if(root==NULL)
             return false;
         if(root->left==NULL && root->right==NULL)
-       		return root->val == sum;
+            return root->val == sum;
         return hasPathSum(root->left, sum-root->val) || hasPathSum(root->right, sum-root->val);
     }
 };
@@ -58,7 +59,8 @@ public:
 
 ### 113. Path Sum II
 
-Given a binary tree and a sum, find all root-to-leaf paths where each path's sum equals the given sum.
+Given a binary tree and a sum, find all root-to-leaf paths 
+where each path's sum equals the given sum.
 
 **Note:** A leaf is a node with no children.
 
@@ -66,7 +68,7 @@ Given a binary tree and a sum, find all root-to-leaf paths where each path's sum
 
 Given the below binary tree and `sum = 22`,
 
-```
+```plaintxt
       5
      / \
     4   8
@@ -78,7 +80,7 @@ Given the below binary tree and `sum = 22`,
 
 Return:
 
-```
+```plaintxt
 [
    [5,4,11,2],
    [5,8,4,5]
@@ -87,7 +89,9 @@ Return:
 
 #### 解题思路
 
-这题跟上面一题其实没有太大的区别，就是这里要求返回所有的满足要求的路径。我们只需要在第一题的基础上把路径记录下来（用一个vector\<int>就可以了），如果满足题目要求，就把记录的路径放到待返回的vector里面。
+这题跟上面一题其实没有太大的区别，就是这里要求返回所有的满足要求的路径。
+我们只需要在第一题的基础上把路径记录下来（用一个vector\<int>就可以了），
+如果满足题目要求，就把记录的路径放到待返回的vector里面。
 
 ```c++
 /**
@@ -125,21 +129,21 @@ private:
 };
 ```
 
-
-
 ### 437. Path Sum III
 
 You are given a binary tree in which each node contains an integer value.
 
 Find the number of paths that sum to a given value.
 
-The path does not need to start or end at the root or a leaf, but it must go downwards (traveling only from parent nodes to child nodes).
+The path does not need to start or end at the root or a leaf,
+but it must go downwards (traveling only from parent nodes to child nodes).
 
-The tree has no more than 1,000 nodes and the values are in the range -1,000,000 to 1,000,000.
+The tree has no more than 1,000 nodes and
+the values are in the range -1,000,000 to 1,000,000.
 
 **Example:**
 
-```
+```plaintxt
 root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8
 
       10
@@ -159,16 +163,22 @@ Return 3. The paths that sum to 8 are:
 
 #### 解题思路
 
-这一题相比前面两题，我认为是要难一些，但是leetcode上面这题的难度是easy，而上面第二题的难度是medium。我也不知道是不是我自己的思维清奇了。
+这一题相比前面两题，我认为是要难一些，但是leetcode上面这题的难度是easy，而上面第二题的难度是medium。
+我也不知道是不是我自己的思维清奇了。
 
-回到题目，为什么说这题更难一点呢，因为这题的路径是更加自由的：可以从任意节点开始，任意节点结束，只要是向下的就可以了。这样的路径明显满足要求的可能路径更加多了，在进行深度搜索的时候要考虑的情况也更加的多了。（至于为甚么是深度优先搜索，其实从路径是向下的就可以知道应该用深度优先搜索。但是这不是一个必要条件，只能说这个能给我们一些启示）。
+回到题目，为什么说这题更难一点呢，因为这题的路径是更加自由的：可以从任意节点开始，任意节点结束，
+只要是向下的就可以了。这样的路径明显满足要求的可能路径更加多了，在进行深度搜索的时候要考虑的情况也更加的多了。
+（至于为甚么是深度优先搜索，其实从路径是向下的就可以知道应该用深度优先搜索。
+但是这不是一个必要条件，只能说这个能给我们一些启示）。
 
 我们先来看看，对于每一个节点，我们要考虑的问题有哪些：
 
 1. 当前节点是否可能是一个路径的结束节点
 2. 当前节点是否可能是一个路径的开始节点
 
-对于第一个问题，还是跟第一第二题差不多（一样）的确定条件，只是现在是每一个节点都要确认一遍。对于第二个问题，其实我们没有办法在进行子节点的搜索之前就确定它是还是不是，所以我们可以一律认为它可能是，然后转化为子节点的第一个问题。因此我们就可以写出我们的代码：
+对于第一个问题，还是跟第一第二题差不多（一样）的确定条件，只是现在是每一个节点都要确认一遍。
+对于第二个问题，其实我们没有办法在进行子节点的搜索之前就确定它是还是不是，所以我们可以一律认为它可能是，
+然后转化为子节点的第一个问题。因此我们就可以写出我们的代码：
 
 ```c++
 class Solution {
@@ -200,7 +210,9 @@ private:
 };
 ```
 
-上面的flag主要是用来标志是否是作为“根节点”（因为路径不要求root-to-leaf，因此所有的节点都有可能成为“根节点”或者“叶节点”）以及是否作为子节点（不包括孙子节点）。因为我们希望如果是子节点的话，我们把它作为可能的路径开头，但是不能是孙子节点也这样处理，因为会重复。
+上面的flag主要是用来标志是否是作为“根节点”（因为路径不要求root-to-leaf，
+因此所有的节点都有可能成为“根节点”或者“叶节点”）以及是否作为子节点（不包括孙子节点）。
+因为我们希望如果是子节点的话，我们把它作为可能的路径开头，但是不能是孙子节点也这样处理，因为会重复。
 
 上面的代码可能不够好理解，写得简洁一些就是：
 
@@ -240,7 +252,7 @@ private:
 
 仔细分析，其实可以发现，上面的算法有很多的重复计算。这些重复计算是怎么产生的呢？用下面这个例子来分析。
 
-```    
+```plaintxt
           10
          /  \
         5   -3
@@ -249,6 +261,7 @@ private:
      / \   \
     3  -2   1
 ```
+
 以10作为根节点，计算到5这个节点的时候，这时会有两种情况，即开始提到的两种情况产生：
 
 1. 当前节点5作为子节点继续向它的子节点搜索
@@ -256,7 +269,9 @@ private:
 
 那么当到达节点3跟节点2的时候，就会有上面的来各种情况在做几乎相同的计算，唯一不同的地方就是presum可能不一样。
 
-如果我们想要一次搜索就得到所有可能的路径，只要我们能够知道presum就可以了。比如到达3这个节点，如果我们知道了前面10-5这个路径前缀的所有presum，那么他可以很容易的知道自己是不是末尾节点，以及是多少条路径的末尾节点（开始节点不一样）。算法是$ curcum - 某一段的presum  == sum $。代码如下：
+如果我们想要一次搜索就得到所有可能的路径，只要我们能够知道presum就可以了。
+比如到达3这个节点，如果我们知道了前面10-5这个路径前缀的所有presum，那么他可以很容易的知道自己是不是末尾节点，
+以及是多少条路径的末尾节点（开始节点不一样）。算法是$curcum - 某一段的presum  == sum$。代码如下：
 
 ```c++
 class Solution {
@@ -285,4 +300,3 @@ private:
 };
 
 ```
-
