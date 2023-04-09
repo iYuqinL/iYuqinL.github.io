@@ -34,22 +34,21 @@ tags: 3DRecon NeRF
 
 输入:
 
-1. $c$ , 特定任务编码器输出的编码
-2. 上一层网络输出的特征向量: $(f_{in}^i)_{i\in[1:T]}, \quad f_{in}^i \in R^{256}$.
+1. $c$, 特定任务编码器输出的编码
+2. 上一层网络输出的特征向量: $f_{in}^{i} \quad f_{in}^i \in R^{256}; i\in[1:T]$.
 
-输出: 一个经过normalization 后的特征向量 $(f_{out}^i)_{i\in[1:T]}, \quad f_{out}^i \in R^{256}$.
+输出: 一个经过normalization 后的特征向量 $f_{out}^i \quad f_{out}^i \in R^{256}; i\in[1:T]$.
 
 流程:
 
-1. 计算输入特征向量的均值和方差，$(f_{in}^i)_{i\in[1:T]}$ over all $i \in [1:T]$.
-   $$
-   \mu = E[f_{in}^i], \quad \sigma^2 = Var[f_{in}^i]
-   $$
-2. 然后使用两个全连接网络从特定任务编码器输出的编码 $c$ 中得到两个 256 维的向量 $\beta(c)$ 和 $\gamma(c)$ .
+1. 计算输入特征向量的均值和方差, $f_{in}^i \quad {i\in[1:T]}$
+   over all $i \in [1:T]$.
+   $\mu = E[f_{in}^i], \quad \sigma^2 = Var[f_{in}^i]$
+2. 然后使用两个全连接网络从特定任务编码器输出的编码 $c$ 中得到
+   两个 256 维的向量 $\beta(c)$
+   和 $\gamma(c)$.
 3. 将输入特征向量标准化后再做一次仿射变换
-   $$
-   f_{out}^i = \gamma(c) \frac{f_{in}^i - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta(c)
-   $$
+   $f_{out}^i = \gamma(c) \frac{f_{in}^i - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta(c)$
 
 #### ONet ResNet-block
 
@@ -62,10 +61,13 @@ tags: 3DRecon NeRF
 
 #### 数据预处理
 
-占用场函数: 给定一个实体形状 $S \subset R^3$，占用场函数 $o: R^3 \rightarrow {0, 1}$.
+占用场函数: 给定一个实体形状 $S \subset R^3$，
+占用场函数 $o: R^3 \rightarrow {0, 1}$.
+
 $$
 o(p) = \left\{\begin{matrix} 0, \quad p\notin S \\ 1, \quad p\in S\end{matrix}\right.
 $$
+
 通过占用场函数，将mesh数据转化为占用场数据，用于网络的训练。
 
 #### Loss
@@ -76,11 +78,13 @@ $$
 \sum_{j=1}^{K} \mathcal{L}\left(f_{\theta}\left(p_{i j}, c_{i}\right), o_{i j}\right)
 $$
 
-$ \mathcal{B} $ 是上述预处理数据 $ S $ 的一个子集，$ |\mathcal{B}| = 64 $
+其中，$\mathcal{B}$
+是上述预处理数据 $S$ 的一个子集，
+$\left\|\mathcal{B}\right\| = 64$
 
 $K$ 是一个shape采样的点数。
+$\mathcal{L}$ 是交叉熵损失函数。
 
-$\mathcal{L}$ 是交叉熵损失函数
 $$
 \mathcal{L}\left(f_{\theta}\left(p_{i j}, c_{i}\right), o_{i j}\right) =
 -\left[o_{i j} \log \left(f_{\theta}\left(p_{i j}, c_{i}\right)\right) +
@@ -243,7 +247,7 @@ f_{v}^{*}(X)=\left\{\begin{array}{ll}
 $$
 重建 Loss 为：
 $$
-\mathcal{L}_{V} = 
+\mathcal{L}_{V} =
 \frac{1}{n} \sum_{i=1}^{n}
 \left|f_{v}\left(F_{V}\left(x_{i}\right), z\left(X_{i}\right)\right)-
 f_{v}^{*}\left(X_{i}\right)\right|^{2}
@@ -431,32 +435,38 @@ $\boldsymbol{b}$ 可以用 $\boldsymbol{d}^T(\boldsymbol{o}+t_b\boldsymbol{d})=0
 
 ##### 具体做法
 
-文中假设场景的非空部分可以由一组稀疏的(有界)体素表示：
-$\mathcal{V}=\left\{V_{1} \ldots V_{K}\right\}$ 。
-并且将场景对应建模为一系列隐函数：
-$F_{\theta}(\boldsymbol{p}, \boldsymbol{v})=
-F_{\theta}^{i}\left(\boldsymbol{g}_{i}(\boldsymbol{p}), \boldsymbol{v}\right)$
-if  $\boldsymbol{p} \in V_{i}$ 。
+文中假设场景的非空部分可以由一组稀疏的(有界)体素表示: $$\mathcal{V} = \left\{V_{1} \cdots V_{K}\right\}$$。
+并且将场景对应建模为一系列隐函数: $$F_{\theta}(\boldsymbol{p}, \boldsymbol{v})=F_{\theta}^{i}\left(\boldsymbol{g}_{i}(\boldsymbol{p}), \boldsymbol{v}\right)$$
+if $\boldsymbol{p} \in V_{i}$.
 每一个 $F_\theta^i$ 由一个多层感知机来表示。
+
 $$
 F_{\theta}^{i}:\left(\boldsymbol{g}_{i}(\boldsymbol{p}), \boldsymbol{v}\right)
 \rightarrow(\boldsymbol{c}, \sigma), \forall \boldsymbol{p} \in V_{i}
 $$
-这里 $\boldsymbol{c}$ 和 $\sigma$ 是点 $\boldsymbol{p}$ 在方向 $\boldsymbol{v}$ 颜色和不透明度。
-$g_i(\boldsymbol{p})$ 是点 $\boldsymbol{p}$ 的一个表示：
+
+这里 $$\boldsymbol{c}$$
+和 $\sigma$
+是点 $$\boldsymbol{p}$$
+在方向 $$\boldsymbol{v}$$ 颜色和不透明度。
+$$g_i(\boldsymbol{p})$$ 是点
+$$\boldsymbol{p}$$ 的一个表示:
+
 $$
 g_{i}(\boldsymbol{p})=
 \zeta\left(\chi\left(\widetilde{g_{i}}\left(\boldsymbol{p}_{1}^{*}\right), \ldots,
 \widetilde{g}_{i}\left(\boldsymbol{p}_{8}^{*}\right)\right)\right)
 $$
-这里 $\boldsymbol{p}_{1}^{*}, \ldots, \boldsymbol{p}_{8}^{*} \in \mathbb{R}^{3}$
-是 $V_i$ 的8个顶点。
-$\widetilde{g}_{i}\left(\boldsymbol{p}_{1}^{*}\right), \ldots,
-\widetilde{g}_{i}\left(\boldsymbol{p}_{8}^{*}\right) \in \mathbb{R}^{d}$
-是对应的特征向量。$\chi(\cdot)$ 是三线性插值。$\zeta(\cdot)$ 是一个后处理，在文中就是positional encoding。
+
+这里 $$\boldsymbol{p}_{1}^{*}, \ldots, \boldsymbol{p}_{8}^{*} \in \mathbb{R}^{3}$$
+是 $V_i$ 的 8个顶点。
+$$\widetilde{g}_{i}\left(\boldsymbol{p}_{1}^{*}\right), \ldots, \widetilde{g}_{i}\left(\boldsymbol{p}_{8}^{*}\right) \in \mathbb{R}^{d}$$
+是对应的特征向量。$$\chi(\cdot)$$ 是三线性插值。
+$$\zeta(\cdot)$$ 是一个后处理，在文中就是positional encoding。
 
 与直接使用3D的坐标作为 $F_\theta^i$ 不同，这里使用的是特征向量
-$g_{i}(\boldsymbol{p})$ 作为输入；而 $g_{i}(\boldsymbol{p})$ 是由八个定点的特征向量插值得到的。
+$$g_{i}(\boldsymbol{p})$$ 作为输入；
+而 $$g_{i}(\boldsymbol{p})$$ 是由八个定点的特征向量插值得到的。
 
 <img src="/images/posts/nerf_intro/image-20210505202011497.png" alt="image-20210505202011497" style="zoom:80%;" />
 
@@ -469,6 +479,7 @@ $g_{i}(\boldsymbol{p})$ 作为输入；而 $g_{i}(\boldsymbol{p})$ 是由八个�
 ![image-20210430224147141](/images/posts/nerf_intro/image-20210430224147141.png)
 
 然后利用公式：
+
 $$
 \boldsymbol{C}\left(\boldsymbol{p}_{0}, \boldsymbol{v}\right) \approx
 \sum_{i=1}^{N}\left(\prod_{j=1}^{i-1} \alpha\left(z_{j}, \Delta_{j}\right)\right)
@@ -476,11 +487,14 @@ $$
 \boldsymbol{c}\left(\boldsymbol{p}\left(z_{i}\right), \boldsymbol{v}\right) +
 A(\boldsymbol{p}_0, \boldsymbol{v})\cdot \boldsymbol{c}_{bg}
 $$
-进行像素颜色计算。$A(\boldsymbol{p}_0, \boldsymbol{v})\cdot \boldsymbol{c}_{bg}$ 是背景项，
-它主要目的是处理射线与所有非空体素都不相交的情况，
-$A\left(\boldsymbol{p}_{0}, \boldsymbol{v}\right)=
-\prod_{i=1}^{N} \alpha\left(z_{i}, \Delta_{i}\right)$，
-$\boldsymbol{c}_{bg}$ 是可学习的背景颜色。而 $\boldsymbol{c}$ 和 $\sigma$ 的计算通过前面的介绍方式计算，
+
+进行像素颜色计算。
+$A(\boldsymbol{p}_0, \boldsymbol{v}) \cdot \boldsymbol{c}_{bg}$ 是背景项，
+它主要目的是处理射线与所有非空体素都不相交的情况,
+$A\left(\boldsymbol{p}_{0}, \boldsymbol{v}\right)=\prod_{i=1}^{N} \alpha\left(z_{i}, \Delta_{i}\right)$,
+$\boldsymbol{c}_{bg}$ 是可学习的背景颜色。
+而 $\boldsymbol{c}$
+和 $\sigma$ 的计算通过前面的介绍方式计算，
 其计算图示如下：
 
 ![image-20210430223627323](/images/posts/nerf_intro/image-20210430223627323.png)
@@ -488,6 +502,7 @@ $\boldsymbol{c}_{bg}$ 是可学习的背景颜色。而 $\boldsymbol{c}$ 和 $\s
 ##### 学习过程
 
 **损失函数**为：
+
 $$
 \mathcal{L}=
 \sum_{\left(\boldsymbol{p}_{0}, \boldsymbol{v}\right) \in R}
@@ -495,6 +510,7 @@ $$
 \boldsymbol{C}^{*}\left(\boldsymbol{p}_{0}, \boldsymbol{v}\right)\right\|_{2}^{2}+
 \lambda \cdot \Omega\left(A\left(\boldsymbol{p}_{0}, \boldsymbol{v}\right)\right)
 $$
+
 $\boldsymbol{C}^*$ 是 ground-truth. $\Omega(\cdot)$ 是一个 $\beta$ 分布正则化。
 
 ![image-20210430230212267](/images/posts/nerf_intro/image-20210430230212267.png)
@@ -508,14 +524,18 @@ $\boldsymbol{C}^*$ 是 ground-truth. $\Omega(\cdot)$ 是一个 $\beta$ 分布正
 现有的基于体积的神经渲染工作表明，在训练后在粗水平上提取场景几何是可行的。
 基于这一观察，文中提出了一种基于粗糙几何信息的训练过程中有效去除非必要体素的策略：自修剪；
 该策略可以使用模型对密度的预测来进一步描述。 也就是说，我们确定要修剪的体素如下：
+
 $$
-V_{i} \text { is pruned if } \min _{j=1 \ldots G}
+V_{i}\text { is pruned if }\min_{j=1 \ldots G}
 \exp \left(-\sigma\left(g_{i}\left(\boldsymbol{p}_{j}\right)\right)\right)>\gamma,
 \boldsymbol{p}_{j} \in V_{i}, V_{i} \in \mathcal{V}
 $$
-这里的 $\{\boldsymbol{p}_j\}_j^G$ 是 G 个在体素 $V_i$ 均匀采样的点。
-文中 $G=16^3$。$\sigma\left(g_{i}\left(\boldsymbol{p}_{j}\right)\right)$ 是网络预测的不透明度。
-$\gamma$ 是一个阈值，文中取 0.5 。
+
+这里的 $$\{\boldsymbol{p}_j\}_j^G$$
+是 G 个在体素 $V_i$ 均匀采样的点。
+文中 $G=16^3$。
+$$\sigma\left(g_{i}\left(\boldsymbol{p}_{j}\right)\right)$$ 是网络预测的不透明度。
+$\gamma$ 是一个阈值，文中取 0.5。
 
 #### AutoInt
 
@@ -524,10 +544,15 @@ $\gamma$ 是一个阈值，文中取 0.5 。
 ##### Pipeline
 
 具体做法就是，先构建一个全连接网络(MLP) $\Phi_\theta(\mathbf{x})$，这个网络是代表的是积分的结果；
-然后对这个网络利用 chain-rule 对**输入** $\mathbf{x}$ 求导，构建一个梯度网络 $\Psi_\theta(\mathbf{x})$ 。
-需要注意的是，这里是 $\Phi_\theta(\mathbf{x})$ 对 $\mathbf{x}$ 求导，
-因此梯度网络 $\Psi_\theta(\mathbf{x})$ 的参数 $\theta$ 和网络 $\Phi_\theta(\mathbf{x})$ 的参数是一样的。
+然后对这个网络利用 chain-rule 对**输入** $\mathbf{x}$ 求导，
+构建一个梯度网络 $\Psi_\theta(\mathbf{x})$ 。
+需要注意的是，这里是 $\Phi_\theta(\mathbf{x})$
+对 $\mathbf{x}$ 求导，
+因此梯度网络 $\Psi_\theta(\mathbf{x})$
+的参数 $\theta$
+和网络 $\Phi_\theta(\mathbf{x})$ 的参数是一样的。
 数学方程如下：
+
 $$
 \begin{array}{rcl}
 \Phi_{\theta}(\mathbf{x}) &=
@@ -537,6 +562,7 @@ $$
 &\partial \Phi_{\theta} / \partial x_{i}
 \end{array}
 $$
+
 其对应的计算图如下：
 
 ![image-20210505143937089](/images/posts/nerf_intro/image-20210505143937089.png)
@@ -547,17 +573,21 @@ NL 为非线性激活函数。
 
 训练过程使用的是蒙特卡洛积分，对梯度网络进行积分，得到积分后的结果进行监督，这点其实跟原来的 NeRF 是十分相似的：
 这里的梯度网络 $\Psi_\theta$ 就是 NeRF 的 $F_\theta$ ，只是两者的网络结构不同而已。
+
 $$
 \theta^{*}=\arg \min _{\theta} \sum_{i<D}
 \left\|\left(\frac{1}{T} \sum_{t_{j}<T}
 \Psi_{\theta}^{t}\left(\rho_{i}, \alpha_{i}, t_{j}\right)\right)-
 s\left(\rho_{i}, \alpha_{i}\right)\right\|_{2}^{2}
 $$
+
 训练好了梯度网络之后，可以把它的参数应用到积分网络 $\Phi_\theta$ 上。测试时就可以用下式进行：
+
 $$
 s(\rho, \alpha)=\Phi_{\theta^{*}}\left(\rho, \alpha, t_{f}\right)-
 \Phi_{\theta^{*}}\left(\rho, \alpha, t_{n}\right)
 $$
+
 <img src="/images/posts/nerf_intro/image-20210505150059419.png" alt="image-20210505150059419" style="zoom:80%;" />
 
 #### DeRF
@@ -574,7 +604,8 @@ $$
 其中 $\mathbf{r}(t) = \mathbf{o} + t\mathbf{d}$ ；
 $T(t)=\exp \left(-\int_{t_{n}}^{t} \sigma(\mathbf{r}(s)) d s\right)$。
 
-离散化表示为: 
+离散化表示为:
+
 $$
 t_{i} \sim \mathcal{U}\left[t_{n}+\frac{i-1}{N}\left(t_{f}-t_{n}\right), t_{n}+
 \frac{i}{N}\left(t_{f}-t_{n}\right)\right] \\
@@ -595,6 +626,7 @@ $$
 <img src="/images/posts/nerf_intro/image-20210505204832260.png" alt="image-20210505204832260" style="zoom: 67%;" />
 
 其对应的数学表达式为：
+
 $$
 \begin{aligned}
 \sigma(\mathbf{x}) &=
@@ -603,6 +635,7 @@ $$
 \sum_{n=1}^{N} w_{\phi}^{n}(\mathbf{x}) \mathbf{c}_{\theta_{n}}(\mathbf{x}, \mathbf{d})
 \end{aligned}
 $$
+
 $n$ 表示head 的index，$w_{\phi}(\mathbf{x}): \mathbb{R}^{3} \mapsto \mathbb{R}^{N}$ 表示权重函数，
 $\phi$ 是可学习参数，$w_{\phi}(\mathbf{x})$ 是正定的并且满足
 $\left\| w_{\phi}(\mathbf{x}) \right\|_1 = 1$ 。
@@ -617,29 +650,36 @@ $\left\| w_{\phi}(\mathbf{x}) \right\|_1 = 1$ 。
 因为所有的head具有相似的表达能力，因此对于渲染质量来说，更好的划分方式是将场景的信息较为均匀的进行划分。
 
 引入 $\mathcal{W}_{\phi}(\mathbf{r}) \in \mathbb{R}^{N}$ 表示对于特定的一条光线，N 个head的总贡献。
+
 $$
 \mathcal{W}_{\phi}(\mathbf{r})=\int_{t_{n}}^{t_{f}}
 \mathcal{T}(t) \sigma(\mathbf{r}(t)) w_{\phi}(\mathbf{r}(t)) d t
 $$
+
 然后通过最小化以下约束来使得N个head对于场景的信息贡献更加平均：
+
 $$
-\mathcal{L}_{\text {uniform }}=\left\|\mathbb{E}_{\mathbf{r} \sim R}\left[\mathcal{W}_{\phi}(\mathbf{r})\right]\right\|_{2}^{2}
+\mathcal{L}_{\text {uniform }}=
+\left\|\mathbb{E}_{\mathbf{r} \sim R}\left[\mathcal{W}_{\phi}(\mathbf{r})\right]\right\|_{2}^{2}
 $$
+
 这里N个head对于场景的信息贡献更加平均，并不是说 N 个 head 在场景的空间上的权重均匀；
 而恰恰相反，N 个 head 在空间划分上的权重应该是每个 head 集中到某个特定的区域，而其他区域权重趋于0。
 
-这里有点难以理解。$\mathcal{L}_{uniform}$ 是均值向量的二范数，
-而因为 $\left\| w_{\phi}(\mathbf{x}) \right\|_1 = 1$，
-所以 $\|\mathcal{W}_{\phi}(\mathbf{r})\|_1$ 是与参数 $\phi$ 无关的，只与 $\sigma$ 有关。
-对于一个特定场景，$\sigma$ 的关于位置分布是确定的，
-那么想要 $\mathcal{L}_{\text {uniform }}=\left\|\mathbb{E}_{\mathbf{r} \sim R}
-\left[\mathcal{W}_{\phi}(\mathbf{r})\right]\right\|_{2}^{2}$ 最小，
-则应该使得每个head(即 $\mathcal{W}_\phi(\mathbf{r})$ 的一个维度)
+这里有点难以理解。 $$\mathcal{L}_{uniform}$$ 是均值向量的二范数，
+而因为 $$\left\| w_{\phi}(\mathbf{x}) \right\|_1 = 1$$，
+所以 $$\|\mathcal{W}_{\phi}(\mathbf{r})\|_1$$ 是与
+参数 $\phi$ 无关的，
+只与 $\sigma$ 有关。
+对于一个特定场景, $\sigma$ 的关于位置分布是确定的，
+那么想要 $$\mathcal{L}_{\text {uniform }}=\left\|\mathbb{E}_{\mathbf{r} \sim R} \left[\mathcal{W}_{\phi}(\mathbf{r})\right]\right\|_{2}^{2}$$ 最小，
+则应该使得每个head(即 $$\mathcal{W}_\phi(\mathbf{r})$$ 的一个维度)
 只对特定一个区域位置有集中的权重响应，其他区域权重趋于零。
 
 ##### Voronoi learnable decompositions
 
-上面说到的是将 radiance field 函数划分为N个小的函数(heads)，以及怎么使得N个小的函数(heads)在信息表示上具有想要的特点(测试时更加高效的或者信息表达更加均匀分配的)。
+上面说到的是将 radiance field 函数划分为N个小的函数(heads)，
+以及怎么使得N个小的函数(heads)在信息表示上具有想要的特点(测试时更加高效的或者信息表达更加均匀分配的)。
 
 而上面的这些并没有对于在空间上的划分的任何约束或者或规则。这部分就是说如何约束 N 个小函数表达不同的空间划分的。
 
@@ -657,16 +697,23 @@ $\beta \in \mathbb{R}^+$ 是一个超参数，它控制着 Voronoi 图划分的 
 
 ##### 训练细节
 
-文中作者发现，在训练 $\sigma_{\theta_n}$ 和 $\mathbf{c}_{\theta_n}$ 之前，必须先把 $w_{\phi}$ 训练好；
-但是如方程 $\mathcal{W}_{\phi}(\mathbf{r})=\int_{t_{n}}^{t_{f}}
-\mathcal{T}(t) \sigma(\mathbf{r}(t)) w_{\phi}(\mathbf{r}(t)) d t$ 所示，
-要训练 $w_{\phi}$ 需要知道 $\sigma$。
+文中作者发现，在训练 $\sigma_{\theta_n}$
+和 $$\mathbf{c}_{\theta_n}$$ 之前，
+必须先把 $w_{\phi}$ 训练好；
+但是如方程 $$\mathcal{W}_{\phi}(\mathbf{r})=\int_{t_{n}}^{t_{f}}\mathcal{T}(t) \sigma(\mathbf{r}(t)) w_{\phi}(\mathbf{r}(t)) d t$$ 所示，
+要训练 $w_{\phi}$
+需要知道 $\sigma$。
 
-因此作者先训练一个粗糙的全场景的 $\sigma_{coarse}$ 和 $\mathbf{c}_{coarse}$，
-然后训练 $w_\phi$ 。在训练的过程中，其实这两个是交替训练的，
-即 $\mathcal{L}_{radiance}$ 和 $\mathcal{L}_{uniform}$ 交替优化。
+因此作者先训练一个粗糙的全场景的 $\sigma_{coarse}$
+和 $$\mathbf{c}_{coarse}$$,
+然后训练 $w_\phi$
+在训练的过程中，其实这两个是交替训练的，
+即 $$\mathcal{L}_{radiance}$$
+和 $$\mathcal{L}_{uniform}$$ 交替优化。
 
-优化好 $w_\phi$ 之后，训练每个 DeRFs $\sigma_{\theta_n}$ 和 $\mathbf{c}_{\theta_n}$ 时，
+优化好 $w_\phi$ 之后，
+训练每个 DeRFs $\sigma_{\theta_n}$ 和
+$$\mathbf{c}_{\theta_n}$$ 时，
 参数 $\phi$ 是固定的。
 
 ###### 对于参数 $\beta$ 的调节
@@ -674,7 +721,8 @@ $\beta \in \mathbb{R}^+$ 是一个超参数，它控制着 Voronoi 图划分的 
 刚开始训练的时候，$\beta$ 比价小，使得 $w^i(\mathbf{x}) \approx w^j(\mathbf{x})$ ；
 随着训练推进，指数级的增加 $\beta$ 直到达到设定的阈值。 这个过程就是使得 Voronoi 划分 soft 到 hard。
 最后的 $\beta$ 的值应使得 Voronoi 划分非常接近 hard 的划分，
-即 $w^i(\mathbf{x}) \approx 1$ 或 $w^i(\mathbf{x}) \approx 0$，这样才能更加适用画家算法。 
+即 $w^i(\mathbf{x}) \approx 1$ 或
+$w^i(\mathbf{x}) \approx 0$，这样才能更加适用画家算法。
 
 ### Unconstrained Images
 
@@ -708,6 +756,7 @@ $$
 $$
 
 同时训练一个coarse一个fine 网络来提高采样的效率。对应的loss函数如下：
+
 $$
 \mathcal{L} = \sum_{i j}\left\|\mathbf{C}\left(\mathbf{r}_{i j}\right)-
 \hat{\mathbf{C}}^{c}\left(\mathbf{r}_{i j}\right)\right\|_{2}^{2}
@@ -721,10 +770,11 @@ $$
 
 ##### Latent Apperance Modeling
 
-每张图片 $\mathcal{I}_i$ 都对应着一个自己的 Embedded vector $\boldsymbol{\ell}_{i}^{(a)}$，
+每张图片 $$\mathcal{I}_i$$ 都对应着一个自己的 Embedded vector $$\boldsymbol{\ell}_{i}^{(a)}$$，
 这是一个 $n^a$ 维的向量。
 
 这样子对应的渲染公式就变成如下：
+
 $$
 \begin{array}{c}
 \hat{\mathbf{C}}_{i}(\mathbf{r})=
@@ -733,7 +783,9 @@ $$
 \left(\mathbf{z}(t), \gamma_{\mathbf{d}}(\mathbf{d}), \ell_{i}^{(a)}\right)
 \end{array}
 $$
-Embedded vector $\boldsymbol{\ell}_{i}^{(a)}$ 跟着网络参数 $\theta$ 一起优化。
+
+Embedded vector $\boldsymbol{\ell}_{i}^{(a)}$
+跟着网络参数 $\theta$ 一起优化。
 
 ##### Transient Object
 
@@ -745,6 +797,7 @@ Embedded vector $\boldsymbol{\ell}_{i}^{(a)}$ 跟着网络参数 $\theta$ 一起
 在文中是将每个像素的颜色建模成各向同性的正态分布，网络训练的一个就是最大化这个分布的似然函数。
 
 对于 transient head 的东西，也是跟 NeRF 一样渲染，然后与静态的部分加起来。整个的网络渲染公式如下：
+
 $$
 \begin{array}{c}
 \hat{\mathbf{C}}_{i}(\mathbf{r})=
@@ -757,10 +810,13 @@ $$
 \sigma_{i}^{(\tau)}\left(t_{k^{\prime}}\right)\right) \delta_{k^{\prime}}\right)
 \end{array}
 $$
+
 对于不确定度采用的是 贝叶斯学习框架 来建模。
 假设观察到的像素强度本质上是嘈杂的，而且该噪声是与输入有关的(异方差的)。
 将像素的观测颜色 $\boldsymbol{C}_i(\mathbf{r})$ 建模成一个与 image 和 光线都有关的各向同性正态分布，
-均值是网络输出 $\hat{\boldsymbol{C}}_i(\mathbf{r})$ ，方差是 $\beta_i^2(\mathbf{r})$:
+均值是网络输出 $\hat{\boldsymbol{C}}_i(\mathbf{r})$ ，
+方差是 $\beta_i^2(\mathbf{r})$:
+
 $$
 \hat{\beta}_{i}(\mathbf{r})=
 \mathcal{R}\left(\mathbf{r}, \beta_{i}, \sigma_{i}^{(\tau)}\right)
@@ -773,7 +829,9 @@ $$
 \beta_{i}(t)=\beta_{\min }+\log \left(1+\exp \left(\tilde{\beta}_{i}(t)\right)\right)
 \end{array}
 $$
+
 网络的 Loss 为：
+
 $$
 L_{i}(\mathbf{r})=
 \frac{\left\|\mathbf{C}_{i}(\mathbf{r})-\hat{\mathbf{C}}_{i}(\mathbf{r})\right\|_{2}^{2}}
@@ -786,6 +844,7 @@ $$
 
 优化的时候，跟原来的 NeRF 一样同时寻来呢一个 coarse 和一个fine 网络。
 但是 coarse 网络就是跟原来 NeRF 的网络是一样的，而不是文中修改后的网络。其完整的loss 如下：
+
 $$
 \sum_{i j} L_{i}\left(\mathbf{r}_{i j}\right)+
 \frac{1}{2}\left\|\mathbf{C}\left(\mathbf{r}_{i j}\right)-
