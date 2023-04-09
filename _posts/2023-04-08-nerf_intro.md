@@ -9,7 +9,7 @@ tags: 3DRecon NeRF
 
 ### Occupancy networks
 
-<img src="md-figure/image-20210424155246718.png" alt="image-20210424155246718" style="zoom:80%;" />
+<img src="/images/posts/nerf_intro/image-20210424155246718.png" alt="image-20210424155246718" style="zoom:80%;" />
 
 希望通过网络拟合一个函数 $f_\theta^x : R^3 \rightarrow [0, 1]$。$x$ 作为函数的一个条件，
 这里直接把 $x$ (的编码)也当做一个输入。
@@ -76,7 +76,7 @@ $$
 \sum_{j=1}^{K} \mathcal{L}\left(f_{\theta}\left(p_{i j}, c_{i}\right), o_{i j}\right)
 $$
 
-$\mathcal{B}$ 是上述预处理数据 $S$ 的一个子集，$|\mathcal{B}| = 64$
+$ \mathcal{B} $ 是上述预处理数据 $ S $ 的一个子集，$ |\mathcal{B}| = 64 $
 
 $K$ 是一个shape采样的点数。
 
@@ -89,7 +89,7 @@ $$
 
 #### Multiresolution IsoSurface Extraction (MISE)
 
-![image-20210424205535013](md-figure/image-20210424205535013.png)
+![image-20210424205535013](/images/posts/nerf_intro/image-20210424205535013.png)
 
 1. 首先测试给定分辨率下的所有点，这些点已经被评估为占用（红色圆圈）或未占用（青色菱形）。
 
@@ -105,7 +105,7 @@ $$
 
 Learning Implicit Fields for Generative Shape Modeling
 
-![image-20210424211832822](md-figure/image-20210424211832822.png)
+![image-20210424211832822](/images/posts/nerf_intro/image-20210424211832822.png)
 
 希望通过网络拟合一个函数 $f^x_\theta : R^3 \rightarrow [0, 1]$. $x$ 作为函数的一个条件，
 这里直接把 $x$ (的编码)也当做一个输入。
@@ -149,7 +149,7 @@ $x$ 表示点，$s$ 表示 SDF 的值。
 
 用一个网络来近似 $f_\theta: R^3 \rightarrow R$ 的映射。即 $f_\theta(x) \approx SDF(x)$ 。
 
-![image-20210424220854038](md-figure/image-20210424220854038.png)
+![image-20210424220854038](/images/posts/nerf_intro/image-20210424220854038.png)
 
 **single shape deepSDF**
 
@@ -221,7 +221,7 @@ $$
 
 为每个像素学习一个特征的好处是，原图像域与特征域在空间上是一一对齐的；那么在多视角的时候，可以通过相机光线投射的关系确定哪些像素的特征应该融合。
 
-<img src="md-figure/image-20210520164554055.png" alt="image-20210520164554055" style="zoom:40%;" />
+<img src="/images/posts/nerf_intro/image-20210520164554055.png" alt="image-20210520164554055" style="zoom:40%;" />
 
 #### PIFu: Pixel-Aligned Implicit Function
 
@@ -258,21 +258,21 @@ $$
 每个三维点对应到多视角中的那些像素是可以通过相机光线投射的关系得到的，那么对应的特征也就有。
 把一个三维点的对应的所有视角的有效像素特征拿出，在做融合就可以了。文中用的是average pooling 的方式来融合的。
 
-<img src="md-figure/image-20210520164735764.png" alt="image-20210520164735764" style="zoom:50%;" />
+<img src="/images/posts/nerf_intro/image-20210520164735764.png" alt="image-20210520164735764" style="zoom:50%;" />
 
 ## Neural Volume Rendering
 
 ### Neural Volumes
 
-<img src="md-figure/image-20210426202602253.png" alt="image-20210426202602253" style="zoom:60%;" />
+<img src="/images/posts/nerf_intro/image-20210426202602253.png" alt="image-20210426202602253" style="zoom:60%;" />
 
 #### 编码器(Encoder)
 
-<img src="md-figure/image-20210426203017056.png" alt="image-20210426203017056" style="zoom:67%;" />
+<img src="/images/posts/nerf_intro/image-20210426203017056.png" alt="image-20210426203017056" style="zoom:67%;" />
 
 #### 解码器(Decoder)
 
-<img src="md-figure/image-20210426205632054.png" alt="image-20210426205632054" style="zoom:80%;" />
+<img src="/images/posts/nerf_intro/image-20210426205632054.png" alt="image-20210426205632054" style="zoom:80%;" />
 
 ### NeRF
 
@@ -285,7 +285,7 @@ $\boldsymbol{c}: (R, G, B)$ 表示颜色。$\sigma$ 表示不透明度。
 注意：$F_\theta$ 表示的是一个静态场景。因为网络的输入只是 $(\boldsymbol{x}, \boldsymbol{d})$
 而不包含任何有关于场景的信息。因此场景信息会固化到网络的参数里面。
 
-<img src="md-figure/image-20210427164928188.png" alt="image-20210427164928188" style="zoom: 80%;" />
+<img src="/images/posts/nerf_intro/image-20210427164928188.png" alt="image-20210427164928188" style="zoom: 80%;" />
 
 可以看到，这里的想法以及网络结构跟DeepSDF的非常相似，只是DeepSDF回归的是SDF值，而这里回归的是颜色和不透明度。
 
@@ -350,11 +350,11 @@ $$
 
 从理论上来说，从一组训练图像中优化 NeRF 中的 5D 函数可能会出现严重退化解：该函数无法在新的视角(训练集不存在的视角)下渲染得到好的图像。下图就是一个特例：
 
-<img src="md-figure/image-20210501124117372.png" alt="image-20210501124117372" style="zoom:80%;" />
+<img src="/images/posts/nerf_intro/image-20210501124117372.png" alt="image-20210501124117372" style="zoom:80%;" />
 
 文中通过固定 NeRF 在单位球面的 $\sigma$ 为1，其他位置为零进行实验，发现在训练集中的视角可以渲染除很好的效果，但是新的视角则无法渲染得到好的效果。
 
-<img src="md-figure/image-20210501124439184.png" alt="image-20210501124439184" style="zoom:80%;" />
+<img src="/images/posts/nerf_intro/image-20210501124439184.png" alt="image-20210501124439184" style="zoom:80%;" />
 
 #### 为什么 NeRF 可以避免退化解
 
@@ -369,7 +369,7 @@ $$
 因为视角 $\boldsymbol{d}$ 是在最后一个Block才输入到网络的，
 那么关于视角 $\boldsymbol{d}$ 的网络容量就很小，以及视角 $\boldsymbol{d}$ 的编码也是较为低频的编码。
 
-<img src="md-figure/image-20210501130325077.png" alt="image-20210501130325077" style="zoom:67%;" />
+<img src="/images/posts/nerf_intro/image-20210501130325077.png" alt="image-20210501130325077" style="zoom:67%;" />
 
 #### 背景与前景分开建模
 
@@ -384,7 +384,7 @@ $$
 
 内单位球约束(建模)的是前景，外反球体约束(建模)的是环境。
 
-<img src="md-figure/image-20210501134234532.png" alt="image-20210501134234532" style="zoom:67%;" />
+<img src="/images/posts/nerf_intro/image-20210501134234532.png" alt="image-20210501134234532" style="zoom:67%;" />
 
 那么渲染方程变成下面式子:
 $$
@@ -409,7 +409,7 @@ $$
 对于已知的点 $\boldsymbol{p}$，其对应的 $r$ 也可以计算(即点 $\boldsymbol{p}$ 到单位球球心的距离)。
 那么对应的 $(x', y', z')$ 可以如下图计算：
 
-<img src="md-figure/image-20210501135453347.png" alt="image-20210501135453347" style="zoom:80%;" />
+<img src="/images/posts/nerf_intro/image-20210501135453347.png" alt="image-20210501135453347" style="zoom:80%;" />
 
 其中 $\boldsymbol{a}$ 可以用 $| \boldsymbol{o} + t_a \boldsymbol{d}| = 1$ 计算出来，
 $\boldsymbol{b}$ 可以用 $\boldsymbol{d}^T(\boldsymbol{o}+t_b\boldsymbol{d})=0$ 计算出来。
@@ -458,7 +458,7 @@ $\widetilde{g}_{i}\left(\boldsymbol{p}_{1}^{*}\right), \ldots,
 与直接使用3D的坐标作为 $F_\theta^i$ 不同，这里使用的是特征向量
 $g_{i}(\boldsymbol{p})$ 作为输入；而 $g_{i}(\boldsymbol{p})$ 是由八个定点的特征向量插值得到的。
 
-<img src="md-figure/image-20210505202011497.png" alt="image-20210505202011497" style="zoom:80%;" />
+<img src="/images/posts/nerf_intro/image-20210505202011497.png" alt="image-20210505202011497" style="zoom:80%;" />
 
 ##### Volume Rendering
 
@@ -466,7 +466,7 @@ $g_{i}(\boldsymbol{p})$ 作为输入；而 $g_{i}(\boldsymbol{p})$ 是由八个�
 
 **Ray Marching inside Voxels**: 只在与光线相交的区域进行采样
 
-![image-20210430224147141](md-figure/image-20210430224147141.png)
+![image-20210430224147141](/images/posts/nerf_intro/image-20210430224147141.png)
 
 然后利用公式：
 $$
@@ -483,7 +483,7 @@ $A\left(\boldsymbol{p}_{0}, \boldsymbol{v}\right)=
 $\boldsymbol{c}_{bg}$ 是可学习的背景颜色。而 $\boldsymbol{c}$ 和 $\sigma$ 的计算通过前面的介绍方式计算，
 其计算图示如下：
 
-![image-20210430223627323](md-figure/image-20210430223627323.png)
+![image-20210430223627323](/images/posts/nerf_intro/image-20210430223627323.png)
 
 ##### 学习过程
 
@@ -497,7 +497,7 @@ $$
 $$
 $\boldsymbol{C}^*$ 是 ground-truth. $\Omega(\cdot)$ 是一个 $\beta$ 分布正则化。
 
-![image-20210430230212267](md-figure/image-20210430230212267.png)
+![image-20210430230212267](/images/posts/nerf_intro/image-20210430230212267.png)
 
 **体素初始化**：
 
@@ -539,7 +539,7 @@ $$
 $$
 其对应的计算图如下：
 
-![image-20210505143937089](md-figure/image-20210505143937089.png)
+![image-20210505143937089](/images/posts/nerf_intro/image-20210505143937089.png)
 
 NL 为非线性激活函数。
 
@@ -558,7 +558,7 @@ $$
 s(\rho, \alpha)=\Phi_{\theta^{*}}\left(\rho, \alpha, t_{f}\right)-
 \Phi_{\theta^{*}}\left(\rho, \alpha, t_{n}\right)
 $$
-<img src="md-figure/image-20210505150059419.png" alt="image-20210505150059419" style="zoom:80%;" />
+<img src="/images/posts/nerf_intro/image-20210505150059419.png" alt="image-20210505150059419" style="zoom:80%;" />
 
 #### DeRF
 
@@ -592,7 +592,7 @@ $$
 
 将辐射场 (radiance fied)函数 $\sigma(\mathbf{x})$ 和 $\mathbf{c}(\mathbf{x})$ 建模成很多个独立的函数的加权和。如图所示：
 
-<img src="md-figure/image-20210505204832260.png" alt="image-20210505204832260" style="zoom: 67%;" />
+<img src="/images/posts/nerf_intro/image-20210505204832260.png" alt="image-20210505204832260" style="zoom: 67%;" />
 
 其对应的数学表达式为：
 $$
@@ -717,7 +717,7 @@ $$
 
 ##### 网络结构
 
-<img src="md-figure/image-20210511152110820.png" alt="image-20210511152110820" style="zoom:50%;" />
+<img src="/images/posts/nerf_intro/image-20210511152110820.png" alt="image-20210511152110820" style="zoom:50%;" />
 
 ##### Latent Apperance Modeling
 
