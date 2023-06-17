@@ -59,10 +59,10 @@ DDPM 的完整算法如下图所示；
 Diffusion Model 的前向过程的数学定义如下：
 
 $$
-q\left(\mathbf{x}_{1: T} \mid \mathbf{x}_0\right):=
-\prod_{t=1}^T q\left(\mathbf{x}_t \mid \mathbf{x}_{t-1}\right),
-\quad q\left(\mathbf{x}_t \mid \mathbf{x}_{t-1}\right):=
-\mathcal{N}\left(\mathbf{x}_t ; \sqrt{1-\beta_t} \mathbf{x}_{t-1}, \beta_t \mathbf{I}\right)
+q\left(x_{1: T} \mid x_0\right):=
+\prod_{t=1}^T q\left(x_t \mid x_{t-1}\right),
+\quad q\left(x_t \mid x_{t-1}\right):=
+\mathcal{N}\left(x_t ; \sqrt{1-\beta_t} x_{t-1}, \beta_t I\right)
 $$
 
 具体来说，对于某个时刻 $t$ 与上一个时刻 $t-1$ 的**图像均值**关系如下：
@@ -71,7 +71,7 @@ $$
 x_t = \sqrt{1-\beta_t} \ x_{t-1} + \sqrt{\beta_t} \ z_1 \quad z_1 \sim N(0, 1)
 $$
 
-其中 $\left\{\beta_t \in (0, 1)\right\}_1^T$是事先设定好的参数，
+其中 $\left\{ \beta_t \in (0, 1) \right \}_{1}^{T}$ 是事先设定好的参数，
 $\beta_t$ 随着 $t$ 的增大是递增的。前向过程每个时刻 $t$ 都只与 $t-1$ 时刻有关，是一个马尔科夫过程。
 
 实际上，我们可以对加噪声过程进行数学上的变换和化简，从而得到 $x_t$ 与 $x_0$ 的关系，
@@ -179,112 +179,112 @@ $$
 进行变换(化简),
 
 $$
-\begin{aligned}\log P(\boldsymbol{x}) &
-    \geq \mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}
-    \left\lfloor\log \frac{P\left(\boldsymbol{x}_{0: T}\right)}
-    {q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}\right\rfloor \\&
-    =\mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}
-    \left[\log \frac{P\left(\boldsymbol{x}_T\right)
-    \prod_{t=1}^T P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_{t-1} \mid
-    \boldsymbol{x}_t\right)}{\prod_{t=1}^T q\left(\boldsymbol{x}_t \mid
-    \boldsymbol{x}_{t-1}\right)}\right] \\
-    & =\mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid
-    \boldsymbol{x}_0\right)}\left[\log \frac{P\left(\boldsymbol{x}_T\right)
-    P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_0 \mid \boldsymbol{x}_1\right)
-    \prod_{t=2}^T P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_{t-1} \mid
-    \boldsymbol{x}_t\right)}{q\left(\boldsymbol{x}_1 \mid \boldsymbol{x}_0\right)
-    \prod_{t=2}^T q\left(\boldsymbol{x}_t \mid
-    \boldsymbol{x}_{t-1}\right)}\right] \\
-    & =\mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid
-    \boldsymbol{x}_0\right)}\left[\log \frac{P\left(\boldsymbol{x}_T\right)
-    P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_0 \mid \boldsymbol{x}_1\right)
-    \prod_{t=2}^T P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_{t-1} \mid
-    \boldsymbol{x}_t\right)}{q\left(\boldsymbol{x}_1 \mid \boldsymbol{x}_0\right)
-    \prod_{t=2}^T q\left(\boldsymbol{x}_t \mid
-    \boldsymbol{x}_{t-1}, \boldsymbol{x}_0\right)}\right] \\
-    & =\mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid
-    \boldsymbol{x}_0\right)}\left[\log \frac{P_{\boldsymbol{\theta}}
-    \left(\boldsymbol{x}_T\right)
-    P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_0 \mid
-    \boldsymbol{x}_1\right)}{q\left(\boldsymbol{x}_1 \mid
-    \boldsymbol{x}_0\right)}+\log \prod_{t=2}^T
-    \frac{P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_{t-1} \mid
-    \boldsymbol{x}_t\right)}{q\left(\boldsymbol{x}_t \mid
-    \boldsymbol{x}_{t-1}, \boldsymbol{x}_0\right)}\right] \\&
-    =\mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid
-    \boldsymbol{x}_0\right)}\left[\log \frac{P\left(\boldsymbol{x}_T\right)
-    P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_0 \mid
-    \boldsymbol{x}_1\right)}{q\left(\boldsymbol{x}_1 \mid
-    \boldsymbol{x}_0\right)}+\log \prod_{t=2}^T
-    \frac{P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_{t-1} \mid
-    \boldsymbol{x}_t\right)}{\frac{q\left(\boldsymbol{x}_{t-1} \mid
-    \boldsymbol{x}_t, \boldsymbol{x}_0\right) q\left(\boldsymbol{x}_t \mid
-    \boldsymbol{x}_0\right)}{q\left(\boldsymbol{x}_{t-1} \mid
-    \boldsymbol{x}_0\right)}}\right] \\
-    & =\mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}
-    \left[\log \frac{P\left(\boldsymbol{x}_T\right) P_{\boldsymbol{\theta}}
-    \left(\boldsymbol{x}_0 \mid \boldsymbol{x}_1\right)}
-    {q\left(\boldsymbol{x}_1 \mid \boldsymbol{x}_0\right)}+
-    \log \prod_{t=2}^T \frac{P_{\boldsymbol{\theta}}
-    \left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t\right)}
-    {\frac{q\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t, \boldsymbol{x}_0\right)
-    q\left(\boldsymbol{x}_t \mid \boldsymbol{x}_0\right)}
-    {q\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_0\right)}}\right] \\
-    & =\mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}
-    \left[\log \frac{P\left(\boldsymbol{x}_T\right) P_{\boldsymbol{\theta}}
-    \left(\boldsymbol{x}_0 \mid \boldsymbol{x}_1\right)}
-    {q\left(\boldsymbol{x}_1 \mid \boldsymbol{x}_0\right)}+
-    \log \frac{q\left(\boldsymbol{x}_1 \mid \boldsymbol{x}_0\right)}
-    {q\left(\boldsymbol{x}_T \mid \boldsymbol{x}_0\right)}+
-    \log \prod_{t=2}^T \frac{P_{\boldsymbol{\theta}}
-    \left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t\right)}
-    {q\left(\boldsymbol{x}_{t-1} \mid
-        \boldsymbol{x}_t, \boldsymbol{x}_0\right)}\right] \\
-    & =\mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}
-    \left[\log \frac{P\left(\boldsymbol{x}_T\right)
-    P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_0 \mid \boldsymbol{x}_1\right)}
-    {q\left(\boldsymbol{x}_T \mid \boldsymbol{x}_0\right)}+
-    \sum_{t=2}^T \log \frac{P_{\boldsymbol{\theta}}
-    \left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t\right)}
-    {q\left(\boldsymbol{x}_{t-1} \mid
-        \boldsymbol{x}_t, \boldsymbol{x}_0\right)}\right] \\
-    & =\mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}
-    \left[\log P_{\boldsymbol{\theta}}
-    \left(\boldsymbol{x}_0 \mid \boldsymbol{x}_1\right)\right]+
-    \mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}
-    \left[\log \frac{P\left(\boldsymbol{x}_T\right)}
-    {q\left(\boldsymbol{x}_T \mid \boldsymbol{x}_0\right)}\right]+
-    \sum_{t=2}^T \mathbb{E}_{q\left(\boldsymbol{x}_{1: T} \mid \boldsymbol{x}_0\right)}
-    \left[\log \frac{P_{\boldsymbol{\theta}}
-    \left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t\right)}
-    {q\left(\boldsymbol{x}_{t-1} \mid
-        \boldsymbol{x}_t, \boldsymbol{x}_0\right)}\right] \\
-    & =\mathbb{E}_{q\left(\boldsymbol{x}_1 \mid \boldsymbol{x}_0\right)}
-    \left[\log P_{\boldsymbol{\theta}}
-    \left(\boldsymbol{x}_0 \mid \boldsymbol{x}_1\right)\right]+
-    \mathbb{E}_{q\left(\boldsymbol{x}_T \mid \boldsymbol{x}_0\right)}
-    \left[\log \frac{P\left(\boldsymbol{x}_T\right)}
-    {q\left(\boldsymbol{x}_T \mid \boldsymbol{x}_0\right)}\right]+
+\begin{aligned}\log P(x) &
+    \geq \mathbb{E}_{q\left(x_{1: T} \mid x_0\right)}
+    \left\lfloor\log \frac{P\left(x_{0: T}\right)}
+    {q\left(x_{1: T} \mid x_0\right)}\right\rfloor \\&
+    =\mathbb{E}_{q\left(x_{1: T} \mid x_0\right)}
+    \left[\log \frac{P\left(x_T\right)
+    \prod_{t=1}^T P_{{\theta}}\left(x_{t-1} \mid
+    x_t\right)}{\prod_{t=1}^T q\left(x_t \mid
+    x_{t-1}\right)}\right] \\
+    & =\mathbb{E}_{q\left(x_{1: T} \mid
+    x_0\right)}\left[\log \frac{P\left(x_T\right)
+    P_{{\theta}}\left(x_0 \mid x_1\right)
+    \prod_{t=2}^T P_{{\theta}}\left(x_{t-1} \mid
+    x_t\right)}{q\left(x_1 \mid x_0\right)
+    \prod_{t=2}^T q\left(x_t \mid
+    x_{t-1}\right)}\right] \\
+    & =\mathbb{E}_{q\left(x_{1: T} \mid
+    x_0\right)}\left[\log \frac{P\left(x_T\right)
+    P_{{\theta}}\left(x_0 \mid x_1\right)
+    \prod_{t=2}^T P_{{\theta}}\left(x_{t-1} \mid
+    x_t\right)}{q\left(x_1 \mid x_0\right)
+    \prod_{t=2}^T q\left(x_t \mid
+    x_{t-1}, x_0\right)}\right] \\
+    & =\mathbb{E}_{q\left(x_{1: T} \mid
+    x_0\right)}\left[\log \frac{P_{{\theta}}
+    \left(x_T\right)
+    P_{{\theta}}\left(x_0 \mid
+    x_1\right)}{q\left(x_1 \mid
+    x_0\right)}+\log \prod_{t=2}^T
+    \frac{P_{{\theta}}\left(x_{t-1} \mid
+    x_t\right)}{q\left(x_t \mid
+    x_{t-1}, x_0\right)}\right] \\&
+    =\mathbb{E}_{q\left(x_{1: T} \mid
+    x_0\right)}\left[\log \frac{P\left(x_T\right)
+    P_{{\theta}}\left(x_0 \mid
+    x_1\right)}{q\left(x_1 \mid
+    x_0\right)}+\log \prod_{t=2}^T
+    \frac{P_{{\theta}}\left(x_{t-1} \mid
+    x_t\right)}{\frac{q\left(x_{t-1} \mid
+    x_t, x_0\right) q\left(x_t \mid
+    x_0\right)}{q\left(x_{t-1} \mid
+    x_0\right)}}\right] \\
+    & =\mathbb{E}_{q\left(x_{1: T} \mid x_0\right)}
+    \left[\log \frac{P\left(x_T\right) P_{{\theta}}
+    \left(x_0 \mid x_1\right)}
+    {q\left(x_1 \mid x_0\right)}+
+    \log \prod_{t=2}^T \frac{P_{{\theta}}
+    \left(x_{t-1} \mid x_t\right)}
+    {\frac{q\left(x_{t-1} \mid x_t, x_0\right)
+    q\left(x_t \mid x_0\right)}
+    {q\left(x_{t-1} \mid x_0\right)}}\right] \\
+    & =\mathbb{E}_{q\left(x_{1: T} \mid x_0\right)}
+    \left[\log \frac{P\left(x_T\right) P_{{\theta}}
+    \left(x_0 \mid x_1\right)}
+    {q\left(x_1 \mid x_0\right)}+
+    \log \frac{q\left(x_1 \mid x_0\right)}
+    {q\left(x_T \mid x_0\right)}+
+    \log \prod_{t=2}^T \frac{P_{{\theta}}
+    \left(x_{t-1} \mid x_t\right)}
+    {q\left(x_{t-1} \mid
+        x_t, x_0\right)}\right] \\
+    & =\mathbb{E}_{q\left(x_{1: T} \mid x_0\right)}
+    \left[\log \frac{P\left(x_T\right)
+    P_{{\theta}}\left(x_0 \mid x_1\right)}
+    {q\left(x_T \mid x_0\right)}+
+    \sum_{t=2}^T \log \frac{P_{{\theta}}
+    \left(x_{t-1} \mid x_t\right)}
+    {q\left(x_{t-1} \mid
+        x_t, x_0\right)}\right] \\
+    & =\mathbb{E}_{q\left(x_{1: T} \mid x_0\right)}
+    \left[\log P_{{\theta}}
+    \left(x_0 \mid x_1\right)\right]+
+    \mathbb{E}_{q\left(x_{1: T} \mid x_0\right)}
+    \left[\log \frac{P\left(x_T\right)}
+    {q\left(x_T \mid x_0\right)}\right]+
+    \sum_{t=2}^T \mathbb{E}_{q\left(x_{1: T} \mid x_0\right)}
+    \left[\log \frac{P_{{\theta}}
+    \left(x_{t-1} \mid x_t\right)}
+    {q\left(x_{t-1} \mid
+        x_t, x_0\right)}\right] \\
+    & =\mathbb{E}_{q\left(x_1 \mid x_0\right)}
+    \left[\log P_{{\theta}}
+    \left(x_0 \mid x_1\right)\right]+
+    \mathbb{E}_{q\left(x_T \mid x_0\right)}
+    \left[\log \frac{P\left(x_T\right)}
+    {q\left(x_T \mid x_0\right)}\right]+
     \sum_{t=2}^T \mathbb{E}_{
-        q\left(\boldsymbol{x}_t, \boldsymbol{x}_{t-1} \mid \boldsymbol{x}_0\right)}
+        q\left(x_t, x_{t-1} \mid x_0\right)}
     \left[\log \frac{
-        P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t\right)}
-    {q\left(\boldsymbol{x}_{t-1} \mid
-        \boldsymbol{x}_t, \boldsymbol{x}_0\right)}\right] \\
-    & =\underbrace{\mathbb{E}_{q\left(\boldsymbol{x}_1 \mid \boldsymbol{x}_0\right)}
-    \left[\log P_{\boldsymbol{\theta}}
-        \left(\boldsymbol{x}_0 \mid \boldsymbol{x}_1\right)\right]}_{
+        P_{{\theta}}\left(x_{t-1} \mid x_t\right)}
+    {q\left(x_{t-1} \mid
+        x_t, x_0\right)}\right] \\
+    & =\underbrace{\mathbb{E}_{q\left(x_1 \mid x_0\right)}
+    \left[\log P_{{\theta}}
+        \left(x_0 \mid x_1\right)\right]}_{
             \text {reconstruction term }}-
     \underbrace{
-        D_{\mathrm{KL}}\left(q\left(\boldsymbol{x}_T \mid \boldsymbol{x}_0\right)
-        \| P\left(\boldsymbol{x}_T\right)\right)}_{
+        D_{\mathrm{KL}}\left(q\left(x_T \mid x_0\right)
+        \| P\left(x_T\right)\right)}_{
             \text {prior matching term }}-
     \sum_{t=2}^T \underbrace{
-        \mathbb{E}_{q\left(\boldsymbol{x}_t \mid \boldsymbol{x}_0\right)}
-        \left[D_{\mathrm{KL}}\left(q\left(\boldsymbol{x}_{t-1} \mid
-            \boldsymbol{x}_t, \boldsymbol{x}_0\right) \|
-            P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_{t-1} \mid
-            \boldsymbol{x}_t\right)\right)\right]}_{\text {denoising matching term}}
+        \mathbb{E}_{q\left(x_t \mid x_0\right)}
+        \left[D_{\mathrm{KL}}\left(q\left(x_{t-1} \mid
+            x_t, x_0\right) \|
+            P_{{\theta}}\left(x_{t-1} \mid
+            x_t\right)\right)\right]}_{\text {denoising matching term}}
 \end{aligned}
 $$
 
@@ -294,65 +294,64 @@ $\int_z q(z \mid x) \log P(x \mid z) d z$
 第二项表示diffusion process 的最终分布与标准高斯先验的接近程度，没有可训练的参数，并且在我们的假设下也等于零；
 第三项是去噪匹配项，是这里最重要的一项。
 diffusion model 的 reverse process 就是希望通过 denoise 模块的
-$P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t\right)$
+$P_{{\theta}}\left(x_{t-1} \mid x_t\right)$
 去拟合去噪步骤的ground truth
-$q\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t, \boldsymbol{x}_0\right)$ ，即如下图所示
+$q\left(x_{t-1} \mid x_t, x_0\right)$ ，即如下图所示
 
 <img src="/images/posts/imggen/DDPM_05.png" alt="reverse" style="zoom:33%;" />
 <!-- ![reverse](/images/posts/imggen/DDPM_05.png) -->
 
-因此我们需要把 $q\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t, \boldsymbol{x}_0\right)$
+因此我们需要把 $q\left(x_{t-1} \mid x_t, x_0\right) $
 计算出来，利用贝叶斯概率公式
 
 $$
-q\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t, \boldsymbol{x}_0\right)=
-\frac{q\left(\boldsymbol{x}_t \mid \boldsymbol{x}_{t-1}, \boldsymbol{x}_0\right)
-q\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_0\right)}
-{q\left(\boldsymbol{x}_t \mid \boldsymbol{x}_0\right)}
-= \frac{q\left(\boldsymbol{x}_t \mid \boldsymbol{x}_{t-1}\right)
-q\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_0\right)}
-{q\left(\boldsymbol{x}_t \mid \boldsymbol{x}_0\right)}
+q\left(x_{t-1} \mid x_t, x_0\right)=
+\frac{q\left(x_t \mid x_{t-1}, x_0\right)
+q\left(x_{t-1} \mid x_0\right)}
+{q\left(x_t \mid x_0\right)}
+= \frac{q\left(x_t \mid x_{t-1}\right)
+q\left(x_{t-1} \mid x_0\right)}
+{q\left(x_t \mid x_0\right)}
 $$
 
 最右边一项能够化简是因为
-
-$$q\left(\boldsymbol{x}_t \mid \boldsymbol{x}_{t-1}, \boldsymbol{x}_0\right) =
- q\left(\boldsymbol{x}_t \mid \boldsymbol{x}_{t-1}\right)$$，
-
+$$q\left(x_t \mid x_{t-1}, x_0\right) =
+ q\left(x_t \mid x_{t-1}\right)$$，
 即forward process 满足马尔科夫性质。
-而到这一步，$q\left(\boldsymbol{x}_t \mid \boldsymbol{x}_{t-1}\right)$ ，
-$q\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_0\right)$
-和 $q\left(\boldsymbol{x}_t \mid \boldsymbol{x}_0\right)$
+而到这一步，$q\left(x_t \mid x_{t-1}\right)$ ，
+$q\left(x_{t-1} \mid x_0\right)$
+和 $q\left(x_t \mid x_0\right)$
 都是[已知的概率分布](Diffusion%20Model%20344e3fcd9ca34fc0a707618046e8d262.md)，
 将概率密度公式代进去硬算可以得到
-$q\left(\boldsymbol{x}_{t-1} \mid  \boldsymbol{x}_t, \boldsymbol{x}_0 \right)$ 服从分布如下
+$q\left(x_{t-1} \mid  x_t, x_0 \right)$ 服从分布如下
 
 $$
-%q\left(\boldsymbol{x}_{t-1} \mid  \boldsymbol{x}_t, \boldsymbol{x}_0 \right) \sim
-\mathcal{N}(\boldsymbol{x}_{t-1} ;
-\underbrace{\frac{\sqrt{\alpha_t}\left(1-\bar{\alpha}_{t-1}\right)
-\boldsymbol{x}_t+\sqrt{\bar{\alpha}_{t-1}}\left(1-\alpha_t\right)
-\boldsymbol{x}_0}{1-\bar{\alpha}_t}}_{\mu_q\left(\boldsymbol{x}_t,
-\boldsymbol{x}_0\right)},
-\underbrace{\left.\frac{\left(1-\alpha_t\right)
-\left(1-\bar{\alpha}_{t-1}\right)}{1-\bar{\alpha}_t}
-\mathbf{I}\right)}_{\boldsymbol{\Sigma}_q(t)}
+%q\left(x_{t-1} \mid  x_t, x_0 \right) \sim
+\mathcal{N}\left(x_{t-1} \right.;
+\underbrace{
+    \frac{\sqrt{\alpha_t}\left(1-\bar{\alpha}_{t-1}\right)
+    x_t+\sqrt{\bar{\alpha}_{t-1}}\left(1-\alpha_t\right)
+    x_0}{1-\bar{\alpha}_t}}_{\mu_q\left(x_t, x_0\right)},
+\underbrace{
+    \frac{\left(1-\alpha_t\right)
+    \left(1-\bar{\alpha}_{t-1}\right)}{1-\bar{\alpha}_t}
+    \left.\mathbf{I}\right)}_{\Sigma_q(t)}
 $$
 
 我们的目标是最小化第三项去噪匹配项，即让两个分布的KL散度最小，
 就是希望通过 denoise 模块的
-$P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t\right)$
+$P_{{\theta}}\left(x_{t-1} \mid x_t\right)$
 去拟合去噪步骤的ground truth
-$q\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t, \boldsymbol{x}_0\right)$
-$q\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t, \boldsymbol{x}_0\right)$
+$q\left(x_{t-1} \mid x_t, x_0\right)$
+$q\left(x_{t-1} \mid x_t, x_0\right)$
 是一个高斯分布，而我们对
-$P_{\boldsymbol{\theta}}\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t\right)$
+$P_{{\theta}}\left(x_{t-1} \mid x_t\right)$
 的网络输出就是高斯分布的均值，方差一般不考虑。
 
 因此KL散度最小化即是让网络输出的均值跟
-$q\left(\boldsymbol{x}_{t-1} \mid \boldsymbol{x}_t, \boldsymbol{x}_0\right)$
-的均值
-$\frac{\sqrt{\alpha_t}\left(1-\bar{\alpha}_{t-1}\right) \boldsymbol{x}_t+\sqrt{\bar{\alpha}_{t-1}}\left(1-\alpha_t\right) \boldsymbol{x}_0}{1-\bar{\alpha}_t}$
+$q\left(x_{t-1} \mid x_t, x_0\right)$ 的均值
+$$\frac{\sqrt{\alpha_t}\left(1-\bar{\alpha}_{t-1}\right) x_t +
+ \sqrt{\bar{\alpha}_{t-1}}\left(1-\alpha_t\right) x_0}{1-\bar{\alpha}_t}$$
 越接近越好。
 
 我们对上述均值式子进一步化简，将 $x_0$ 使用 $x_t$ 替换，我们在前面已经推导出
