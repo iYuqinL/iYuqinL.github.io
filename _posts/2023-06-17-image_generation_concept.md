@@ -44,12 +44,12 @@ auto regressive 的计算时间就会非常长。
        控制了non auto regressive 模型的生成的大方向，
        减少了non auto regressive模型生成过程中不够确定的因素。
     以语音合成为例：
-    ![语音合成](/images/posts/imggen/intro_00.png)
+    <img src="/images/posts/imggen/intro_00.png" alt="语音合成" style="zoom:33%;" />
 2. non auto regressive 模型一次生成结果的方式，改成多次迭代生成结果。
     1. 虽然每次都是生成最终结果需要的token量(分辨率)，但是由于多次迭代才是最终的结果，
        前面一次的结果可以为后面一次生成提供一个大方向，减少其生成过程中不够确定的因素。
     以图像生成为例：
-    ![图像生成](/images/posts/imggen/intro_01.png)
+    <img src="/images/posts/imggen/intro_01.png" alt="图像生成" style="zoom:33%;" />
 
 第二种融合的方式看起来就很像diffusion model 做的方式。
 
@@ -57,7 +57,7 @@ auto regressive 的计算时间就会非常长。
 
 图像生成任务可以简单的用以下示意图来表示
 
-![图像生成任务](/images/posts/imggen/intro_02.png)
+<img src="/images/posts/imggen/intro_02.png" alt="图像生成任务" style="zoom:33%;" />
 
 如图所示，图像生成任务是希望：输入一句话或者一张图片，生成符合描述的新的图片。
 
@@ -69,7 +69,7 @@ auto regressive 的计算时间就会非常长。
 因此，在我们实现一个图像生成模型的时候，除了我们输入的文字/图像以外，
 还会额外的从某个概率分布(一般是高斯分布)里采样一个特征作为输入
 
-![图像生成模型](/images/posts/imggen/intro_03.png)
+<img src="/images/posts/imggen/intro_03.png" alt="图像生成模型" style="zoom:25%;" />
 
 所以，图像生成模型需要做的实际上是，把高斯分布映射到生成结果所构成的概率分布；
 而输入的文字/图像是对结果所构成的概率分布做了限制(需要满足输入的描述，而不是所有图像的概率空间)。
