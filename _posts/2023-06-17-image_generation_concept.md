@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 图像生成概念
-date: 2023-04-08
+date: 2023-06-17
 tags: imageGen AGI
 ---
 
