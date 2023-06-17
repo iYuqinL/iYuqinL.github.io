@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Diffusion Model
-date: 2023-06-19
+date: 2023-06-17
 tags: imageGen AGI
 ---
 
