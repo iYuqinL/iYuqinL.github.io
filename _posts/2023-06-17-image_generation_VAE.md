@@ -9,7 +9,7 @@ tags: imageGen AGI
 
 对于普通的Auto Encoder，其框架如下图所示。
 
-<img src="/images/posts/imggen/VAE_00.png" alt="Auto Encoder" style="zoom:33%;" />
+<img src="/images/posts/imggen/VAE_00.png" alt="Auto Encoder" style="zoom:20%;" />
 <!-- ![Auto Encoder](/images/posts/imggen/VAE_00.png) -->
 
 输入一张图像，经过 encoder 编程一个特征向量(code)；然后这个 code 经过一个 decoder 之后输出一张图像。
@@ -24,7 +24,7 @@ tags: imageGen AGI
 
 VAE就是来解决这个问题，它的基本算法框架如下：
 
-<img src="/images/posts/imggen/VAE_01.png" alt="VAE" style="zoom:33%;" />
+<img src="/images/posts/imggen/VAE_01.png" alt="VAE" style="zoom:20%;" />
 <!-- ![VAE](/images/posts/imggen/VAE_01.png) -->
 
 相比原来的 Auto Encoder，VAE 对 code 进行了改变：
@@ -66,7 +66,7 @@ VAE 针对编码空间编码点之间的空间，通过加入噪声的方式，�
 同时，由于编码点的覆盖区域会产生 overlap，从而编码空间对于 Decoder 可能是比较线性/平滑的；
 这就使得 VAE 能够将从编码空间(code space)采样的编码恢复出正常的图像。
 
-<img src="/images/posts/imggen/VAE_02.png" alt="intuitiveVAE" style="zoom:33%;" />
+<img src="/images/posts/imggen/VAE_02.png" alt="intuitiveVAE" style="zoom:36%;" />
 <!-- ![intuitive VAE](/images/posts/imggen/VAE_02.png) -->
 
 ## Why VAE (数学解释）
@@ -78,15 +78,15 @@ VAE 针对编码空间编码点之间的空间，通过加入噪声的方式，�
 我们可以认为所需要的概率分布是一个连续空间的 infinite 混合高斯模型，即：
 
 $$
-z \sim N(0, I) , \quad x | z \sim N(\mu(z), \sigma(z)) \\
-P(x) = \int_z P(z)P(x|z) dz
+z \sim N(0, I) , \quad x \mid z \sim N(\mu(z), \sigma(z)) \\
+P(x) = \int_z P(z)P(x \mid z) dz
 $$
 
 其中 $z$ 是一个向量，每个元素都服从高斯分布；
 值得一提的是，虽然 $z$ 是服从一个简单的高斯分布，但是 $P(x)$ 可以是非常复杂的概率分布；
 同时，$z$ 也可以不是高斯分布，可以是其他的概率分布，其概率分布不影响最终的结果。
 
-$\mu(z), \sigma(z)$ 表示给定 $z$ 的情况下，$x | z$ 所服从的高斯分布的均值和方差，
+$\mu(z), \sigma(z)$ 表示给定 $z$ 的情况下，$x \mid z$ 所服从的高斯分布的均值和方差，
 $\mu(z), \sigma(z)$ 均是需要估计(学习)的；
 
 那么，对于收集到的数据 $X = \{x\}$，
@@ -96,7 +96,7 @@ $$
  \max L = \max \sum_{x} \log P(x)
 $$
 
-引入一个任意概率分布 $q(z|x)$ ，下式永远成立:
+引入一个任意概率分布 $q(z \mid x)$ ，下式永远成立:
 
 $$
 \begin{aligned}
@@ -116,7 +116,7 @@ $$
 $$
 \log P(x) \geq \int_z q(z \mid x)
 \log \left(\frac{P(x \mid z) P(z)}{q(z \mid x)}\right) d z =
-E_{q(z|x)}[\log{(\frac{P(x,z)}{q(z|x)})}]
+E_{q(z\mid x)}[\log{(\frac{P(x,z)}{q(z \mid x)})}]
 $$
 
 $\int_z q(z \mid x) \log \left(\frac{P(x \mid z) P(z)}{q(z \mid x)}\right) d z$
@@ -136,8 +136,8 @@ $$
 跟 $P(z \mid x)$ 是没有关系的，
 因此在这个过程中，由于 $q(z \mid x)$ 的引入，
 会使得优化后的 $KL\left(q(z\mid x) || P(z \mid x) \right)$
-也是最小的，即 $q(z | x)$ 是
-$P(z | x)$ 的一个近似分布。
+也是最小的，即 $q(z \mid x)$ 是
+$P(z \mid x)$ 的一个近似分布。
 
 <img src="/images/posts/imggen/VAE_03.png" alt="log likely" style="zoom:33%;" />
 <!-- ![log likely](/images/posts/imggen/VAE_03.png) -->
@@ -158,19 +158,20 @@ maximize $\int_z q(z \mid x) \log P(x \mid z) d z$。
 
 ### connect to VAE
 
-如前面所述，$\mu(z), \sigma(z)$ 表示给定 $z$ 的情况下，$x | z$ 所服从的高斯分布的均值和方差，
+如前面所述，$\mu(z), \sigma(z)$ 表示给定 $z$ 的情况下，$x \mid z$ 所服从的高斯分布的均值和方差，
 $\mu(z), \sigma(z)$ 均是需要估计(学习)的；在VAE是通过一个网络(Decoder)来学习这个函数。
 
 <img src="/images/posts/imggen/VAE_04.png" alt="VAE Decoder" style="zoom:33%;" />
 <!-- ![VAE Decoder](/images/posts/imggen/VAE_04.png) -->
 
-同样使用一个神经网络(Encoder)来拟合 $q(z|x)$, $z | x \sim N(\mu(x), \sigma(x))$
+同样使用一个神经网络(Encoder)来拟合 $q(z \mid x)$,
+$z \mid x \sim N(\mu(x), \sigma(x))$
 
 <img src="/images/posts/imggen/VAE_05.png" alt="VAE Encoder" style="zoom:33%;" />
 <!-- ![VAE Encoder](/images/posts/imggen/VAE_05.png) -->
 
 因此 minimize $KL(q(z\mid x) || P(z))$，
-即是优化 NN‘ 的参数使得 $q(z | x)$跟
+即是优化 NN‘ 的参数使得 $q(z \mid x)$跟
  $P(z) = N(0, 1)$ 接近，即
 
 $$
@@ -181,11 +182,11 @@ $$
 第二项 maximize
 
 $$
-\int_z q(z \mid x) \log P(x \mid z) d z = E_{q(z|x)}[\log P(x|z)]
+\int_z q(z \mid x) \log P(x \mid z) d z = E_{q(z \mid x)}[\log P(x \mid z)]
 $$
 
-即是最大化在 $q(z | x)$
-下的期望$E_{q(z|x)}[\log P(x|z)]$，这就是 auto encoder 做的事情
+即是最大化在 $q(z \mid x)$
+下的期望$E_{q(z \mid x)}[\log P(x \mid z)]$，这就是 auto encoder 做的事情
 
 <img src="/images/posts/imggen/VAE_06.png" alt="VAE" style="zoom:33%;" />
 <!-- ![VAE](/images/posts/imggen/VAE_06.png) -->
