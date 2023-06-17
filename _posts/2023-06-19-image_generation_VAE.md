@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 图像生成-VAE
-date: 2023-06-17
+date: 2023-06-18
 tags: imageGen AGI
 ---
 
