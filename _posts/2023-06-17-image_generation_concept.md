@@ -2,7 +2,7 @@
 layout: post
 title: 图像生成概念
 date: 2023-04-08
-tags: 3DRecon NeRF
+tags: imageGen AGI
 ---
 
 ## 生成式任务
